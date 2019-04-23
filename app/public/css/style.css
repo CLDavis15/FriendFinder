@@ -19,11 +19,11 @@ main {
     flex: 1 0 auto;
 }
 
-main h1 {
+h1 {
     font-weight: bold;
 }
 
- main h2 {
+h2 {
     font-weight: 300;
 }
 
