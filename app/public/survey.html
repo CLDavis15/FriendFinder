@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" type= "text/css" href="css/reset.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
@@ -187,10 +187,7 @@
 
                     <!-- Survey Submit Button -->
                     <div>
-                        <button class="btn waves-effect waves-light" type="submit" name="action"
-                            id="submitButton">Submit Responses
-                            <i class="material-icons right">send</i>
-                        </button>
+                        <button id="submitButton" type="submit" class="btn btn-md btn-danger btn-block"><span class="glyphicon glyphicon-send"></span> Submit</button> 
                     </div>
                 </div>
             </div>
@@ -200,10 +197,10 @@
 
     <div id="modal1" class="modal">
             <div class="modal-content">
-                <h4>Closest Friend Match</h4>
+                <h4>Best Friend Match</h4>
                 <div class="divider"></div>
-                <h5 id="userMatch"></h5>
-                <img id="userMatchImage" class="materialboxed" width="650" src="">
+                <h5 id="matchName"></h5>
+                <img id="matchImage" class="materialboxed" width="650" src="">
             </div>
             <div class="modal-footer">
                 <a href="/survey" class="modal-action modal-close waves-effect waves-green btn-flat">Fill Again!</a>
@@ -226,35 +223,43 @@
         $('#submitButton').on('click', function (event) {
             event.preventDefault();
 
-            var userInput = {
-                name: $('#userName').val().trim(),
-                photo: $('#userPhoto').val().trim(),
-                scores: [
-                    $('#question1').val().trim(),
-                    $('#question2').val().trim(),
-                    $('#question3').val().trim(),
-                    $('#question4').val().trim(),
-                    $('#question5').val().trim(),
-                    $('#question6').val().trim(),
-                    $('#question7').val().trim(),
-                    $('#question8').val().trim(),
-                    $('#question9').val().trim(),
-                    $('#question10').val().trim()
-                ]
-            };
-            // console.log('userInput = ' + JSON.stringify(userInput));
-            // Add user inputs to friends list
-            $.post('/api/friends', userInput)
-                .done(function (data) {
-                    // console.log('response = ' + JSON.stringify(data));
-                    // Set the name and image values of friend match
-                    $('#userMatch').html(data.matchName);
-                    $("#userMatchImage").attr("src", data.matchImage);
-                    // Pop open the modal dialog
+            var valid = true;
+
+            
+
+            if(valid === true) {
+
+                var userInput = {
+                    name: $('#userName').val().trim(),
+                    photo: $('#userPhoto').val().trim(),
+                    scores: [
+                        $('#question1').val().trim(),
+                        $('#question2').val().trim(),
+                        $('#question3').val().trim(),
+                        $('#question4').val().trim(),
+                        $('#question5').val().trim(),
+                        $('#question6').val().trim(),
+                        $('#question7').val().trim(),
+                        $('#question8').val().trim(),
+                        $('#question9').val().trim(),
+                        $('#question10').val().trim()
+                    ]
+                };
+                
+                var current = window.location.origin;
+
+                $.post(current + '/api/friends', userInput, function (data) {
+                    
+                    $('#matchName').html(data.name);
+                    $("#matchImage").attr("src", data.photo);
+                    
                     $('#modal1').modal('open');
                 });
+            } else {
+                alert("Survey incomplete!");
+            }
         });
-    </script>
+ </script>
 
 
 </body>
